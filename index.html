@@ -1,0 +1,492 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AI Illustration Style Pack</title>
+<style>
+:root{--bg:#0e0e10;--surface:#17171b;--surface2:#1f1f25;--border:#2e2e38;--accent:#c8f135;--accent2:#3df5c1;--text:#e8e8ed;--muted:#7a7a8c;--accent-contrast:#ffffff;--radius:10px;--mono:ui-monospace,'SF Mono','Cascadia Mono','Fira Mono',monospace;--display:'Georgia','Times New Roman',serif}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{background:var(--bg);color:var(--text);font-family:var(--mono);font-size:14px;line-height:1.6;min-height:100vh}
+.hero{padding:48px 24px 32px;border-bottom:1px solid var(--border);background:var(--surface);position:relative;overflow:hidden}
+.hero::before{content:'';position:absolute;top:-100px;right:-100px;width:520px;height:520px;background:radial-gradient(circle,color-mix(in srgb,var(--accent) 7%,transparent),transparent 65%);pointer-events:none;filter:blur(18px)}
+.hero-inner{max-width:860px;margin:0 auto;position:relative}
+.pack-eyebrow{font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:var(--accent);margin-bottom:10px}
+.pack-title{font-family:var(--display);font-size:clamp(26px,6vw,48px);font-weight:700;line-height:1.15;letter-spacing:-.5px;margin-bottom:10px}
+.pack-tagline{color:var(--muted);font-size:13px;margin-bottom:24px;max-width:520px}
+.pack-stats{display:flex;gap:20px;flex-wrap:wrap}
+.stat{display:flex;flex-direction:column;gap:2px}
+.stat-num{font-size:22px;font-weight:600;color:var(--accent);font-family:var(--display);line-height:1}
+.stat-label{font-size:10px;letter-spacing:.08em;text-transform:uppercase;color:var(--muted)}
+.controls{position:sticky;top:0;z-index:100;background:color-mix(in srgb,var(--bg) 92%,transparent);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);border-bottom:1px solid var(--border);padding:12px 24px}
+.controls-inner{max-width:860px;margin:0 auto;display:flex;flex-direction:column;gap:10px}
+.subject-row{display:flex;align-items:center;gap:10px;flex-wrap:wrap}
+.subject-label{font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);white-space:nowrap}
+.subject-input{flex:1;min-width:180px;max-width:320px;background:var(--surface);border:1.5px solid var(--border);border-radius:7px;color:var(--accent);font-family:var(--mono);font-size:13px;padding:8px 12px;outline:none;transition:border-color .15s}
+.subject-input:focus{border-color:var(--accent)}
+.subject-input::placeholder{color:var(--muted);font-style:italic}
+.subject-hint{font-size:11px;color:var(--muted);font-style:italic}
+.tabs-row{display:flex;gap:6px;align-items:center;flex-wrap:wrap}
+.tab{background:none;border:1.5px solid var(--border);border-radius:6px;color:var(--muted);cursor:pointer;font-family:var(--mono);font-size:11px;letter-spacing:.04em;padding:5px 14px;transition:all .15s;display:flex;align-items:center;gap:5px}
+.tab:hover{border-color:var(--accent);color:var(--accent)}
+.tab.active{background:var(--accent);border-color:var(--accent);color:var(--accent-contrast);font-weight:600}
+.badge{background:rgba(128,128,128,.25);border-radius:20px;font-size:10px;padding:1px 6px;line-height:1.4}
+.btn-pdf{margin-left:auto;background:none;border:1.5px solid var(--border);border-radius:6px;color:var(--muted);cursor:pointer;font-family:var(--mono);font-size:11px;padding:5px 14px;transition:all .15s;display:flex;align-items:center;gap:5px}.btn-info{background:color-mix(in srgb,var(--accent2) 10%,transparent);border:1.5px solid var(--accent2);border-radius:6px;color:var(--accent2);cursor:pointer;font-family:var(--mono);font-size:11px;padding:5px 14px;transition:all .15s;display:flex;align-items:center;gap:5px}.btn-info.info-off{background:none;border-color:var(--border);color:var(--muted)}.btn-info.info-off:hover{border-color:var(--accent2);color:var(--accent2)}.info-hidden .cat-info{display:none!important}
+.btn-pdf:hover{border-color:var(--accent2);color:var(--accent2)}
+main{max-width:860px;margin:0 auto;padding:28px 24px 100px}
+.category{margin-bottom:40px;animation:fadeUp .35s ease both}
+.category:nth-child(2){animation-delay:.05s}
+.category:nth-child(3){animation-delay:.1s}
+.category:nth-child(4){animation-delay:.15s}
+.category:nth-child(5){animation-delay:.2s}
+.cat-header{display:flex;align-items:center;gap:12px;margin-bottom:12px}
+.cat-name{font-size:11px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--accent2);white-space:nowrap}
+.cat-line{flex:1;height:1px;background:var(--border)}
+.cat-count{font-size:10px;color:var(--muted)}
+.modifier-row{display:flex;align-items:center;gap:7px;flex-wrap:wrap;margin-bottom:12px;padding:9px 12px;background:var(--surface);border-radius:8px;border:1px solid var(--border)}
+.mod-label{font-size:10px;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);white-space:nowrap}
+.mod-chip{background:var(--surface2);border:1.5px solid var(--border);border-radius:20px;color:var(--muted);cursor:pointer;font-family:var(--mono);font-size:11px;padding:3px 11px;transition:all .15s;user-select:none;line-height:1.5}
+.mod-chip:hover{border-color:var(--accent2);color:var(--accent2)}
+.mod-chip.active{background:color-mix(in srgb,var(--accent2) 12%,transparent);border-color:var(--accent2);color:var(--accent2)}
+.prompts-grid{display:grid;gap:8px}
+.prompt-card{background:var(--surface);border:1.5px solid var(--border);border-radius:var(--radius);padding:14px 16px;transition:border-color .15s,transform .1s}
+.prompt-card:hover{border-color:color-mix(in srgb,var(--border) 50%,var(--accent) 50%);transform:translateY(-1px)}
+.prompt-card.favourited{border-color:color-mix(in srgb,var(--accent) 40%,transparent);background:color-mix(in srgb,var(--accent) 4%,var(--surface))}
+.prompt-text{font-size:13px;line-height:1.75;margin-bottom:12px;word-break:break-word;color:var(--text)}
+.subject-hl{color:var(--accent);font-weight:500}
+.modifier-hl{color:var(--accent2);font-style:italic}
+.card-actions{display:flex;align-items:center;gap:7px;justify-content:flex-end}
+.btn-fav{background:none;border:1.5px solid var(--border);border-radius:6px;color:var(--muted);cursor:pointer;font-size:13px;padding:5px 9px;line-height:1;transition:all .15s}
+.btn-fav:hover{border-color:var(--accent);color:var(--accent)}
+.btn-fav.active{border-color:var(--accent);color:var(--accent);background:color-mix(in srgb,var(--accent) 10%,transparent)}
+.btn-copy{background:var(--surface2);border:1.5px solid var(--border);border-radius:6px;color:var(--text);cursor:pointer;font-family:var(--mono);font-size:11px;padding:5px 14px;transition:all .15s;display:flex;align-items:center;gap:5px}
+.btn-copy:hover{border-color:var(--accent2);color:var(--accent2)}
+.btn-copy.copied{border-color:var(--accent);color:var(--accent)}
+.empty-state{text-align:center;padding:60px 20px;color:var(--muted)}
+.empty-icon{font-size:32px;margin-bottom:12px}
+.empty-state p{font-size:13px;line-height:1.8}
+footer{position:fixed;bottom:0;left:0;right:0;background:color-mix(in srgb,var(--bg) 95%,transparent);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);border-top:1px solid var(--border);padding:10px 24px;text-align:center;font-size:11px;color:var(--muted);z-index:50}
+.pack-intro{color:var(--muted);font-size:12px;line-height:1.7;margin-bottom:20px;max-width:600px;white-space:pre-line}.cat-info{margin-bottom:10px;padding:10px 14px;background:var(--surface);border-radius:8px;border:1px solid var(--border);display:flex;flex-direction:column;gap:7px}.cat-notes{font-size:12px;color:var(--muted);line-height:1.65;white-space:pre-line}.cat-tags{display:flex;flex-wrap:wrap;gap:0;align-items:center;row-gap:3px}.cat-tag{font-size:10px;letter-spacing:.05em;color:var(--muted);padding:1px 0;opacity:.85}.cat-tag-sep{opacity:.4}.cat-image{width:100%;border-radius:8px;margin-bottom:2px;object-fit:contain;background:var(--surface2);border:1px solid var(--border);display:block}@keyframes fadeUp{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:translateY(0)}}
+@media(max-width:600px){.hero{padding:28px 16px 24px}.controls{padding:10px 16px}main{padding:20px 16px 100px}.btn-pdf{margin-left:0}.pack-stats{gap:14px}}
+@media print{.hero::before{display:none!important}.controls,.card-actions,footer{display:none!important}.modifier-row{display:flex!important}}</style>
+</head>
+<body>
+<div class="hero"><div class="hero-inner">
+  <div class="pack-eyebrow" id="hero-eyebrow"></div>
+  <div class="pack-title" id="hero-title"></div>
+  <div class="pack-tagline" id="hero-tagline"></div>
+  <div class="pack-intro" id="hero-intro" style="display:none"></div>
+  <div class="pack-stats" id="hero-stats"></div>
+</div></div>
+<div class="controls"><div class="controls-inner">
+  <div class="subject-row">
+    <span class="subject-label">Your subject</span>
+    <input class="subject-input" id="subject-input" type="text" placeholder="e.g. a sleeping cat" maxlength="60" autocomplete="off" spellcheck="false"/>
+    <span class="subject-hint" id="subject-hint">replaces the placeholder in every prompt</span>
+  </div>
+  <div class="tabs-row">
+    <button class="tab active" data-tab="all" onclick="switchTab('all')">All Prompts</button>
+    <button class="tab" data-tab="favorites" onclick="switchTab('favorites')">&#9733; Favorites <span class="badge" id="fav-badge">0</span></button>
+    <button class="btn-pdf" onclick="exportPDF()">&#8681; PDF</button>
+    <button class="btn-info" id="btn-toggle-info" onclick="toggleInfo()" title="Hide category info">&#9432; Info</button>
+  </div>
+</div></div>
+<main id="main"></main>
+<footer id="footer"></footer>
+<script>
+var PACK = {"id":"mnjsyc0ru64v","title":"AI Illustration Style Pack","tagline":"28 prompts across 5 illustrated art styles for AI image generation","author":"ShapeShift","defaultSubject":"[subject]","theme":{"bg":"#0e0e10","surface":"#17171b","surface2":"#1f1f25","border":"#2e2e38","accent":"#c8f135","accent2":"#3df5c1","text":"#e8e8ed","muted":"#7a7a8c"},"intro":"A curated collection of prompt templates for generating illustrated artwork across five distinct visual styles. Each category includes style-specific tips and modifier options to help you dial in exactly the look you want.","categories":[{"name":"Category 1: Flat Vector","notes":"Works best in Midjourney and DALL·E. Keep subjects simple — complex scenes tend to lose the clean flat aesthetic. Avoid photorealistic lighting modifiers as they conflict with the style.","tags":["midjourney","dall-e","beginner friendly"],"image":"https://drive.google.com/file/d/1f1RAkjRZHUp1AMefxhz9LTMFivXpQFkE/view?usp=sharing","modifiers":["bold outlines","muted palette","retro colour scheme","geometric shapes","grain texture"],"prompts":[{"id":"mnjsyc0rhqeg","template":"Flat vector illustration of {subject}, clean shapes, minimal detail, solid colour fills, white background, SVG style"},{"id":"mnjt1jnqqirb","template":"Modern flat design of {subject}, bold geometric forms, limited colour palette, negative space, graphic poster aesthetic"},{"id":"mnjt1s1q4jwc","template":"Flat icon illustration of {subject}, two-tone colour scheme, simple silhouette, scalable vector style, professional"},{"id":"mnjt217q2n8d","template":"Retro flat illustration of {subject}, mid-century modern aesthetic, muted tones, organic shapes, vintage poster style"},{"id":"mnjt28pdh4r5","template":"Flat editorial illustration of {subject}, bold graphic style, high contrast, clean linework, magazine editorial quality"}]},{"name":"Category 2: Watercolour & Ink","notes":"Add a paper texture modifier for the most authentic results. Midjourney v6 handles wet-on-wet effects particularly well. For botanical subjects, try the fine ink outlines modifier.","tags":["midjourney","traditional media","painterly"],"image":"","modifiers":["wet on wet washes","fine ink outlines","textured paper","loose brushwork","limited palette"],"prompts":[{"id":"mnjt5ssbhtbm","template":"Watercolour painting of {subject}, soft wet washes, delicate colour bleed, visible paper texture, white background"},{"id":"mnjtaca6x9c4","template":"Loose watercolour sketch of {subject}, expressive brushwork, muted earth tones, spontaneous marks, impressionistic"},{"id":"mnjtajliqoiw","template":"Botanical watercolour illustration of {subject}, detailed ink outlines, precise washes, scientific illustration style"},{"id":"mnjtaqadwmfv","template":"Watercolour and ink of {subject}, fine pen linework with colour washes, urban sketching style, warm tones"},{"id":"mnjtaxbsiqo9","template":"Children's book watercolour of {subject}, gentle washes, soft edges, whimsical charm, warm inviting palette"},{"id":"mnjtb3cgg85k","template":"Japanese watercolour style of {subject}, minimal composition, soft ink washes, elegant negative space, zen aesthetic"}]},{"name":"Category 3: Pencil & Line Art","notes":"Single weight lines produce the cleanest results. For a more textured feel, try the cross hatching modifier. Works exceptionally well for portraits and architectural subjects.","tags":["midjourney","dall-e","stable diffusion","monochrome"],"image":"","modifiers":["cross hatching","single weight lines","rough pencil texture","stippling","coloured paper"],"prompts":[{"id":"mnjtbfsdlmsu","template":"Detailed pencil sketch of {subject}, graphite on white paper, fine hatching, realistic shading, sketchbook quality"},{"id":"mnjtduisp9uw","template":"Clean line art of {subject}, single weight black lines, white background, technical illustration style, precise"},{"id":"mnjte1q0fex2","template":"Gestural pencil drawing of {subject}, loose expressive strokes, minimal detail, quick study aesthetic, raw energy"},{"id":"mnjte8fqlanu","template":"Fine pen and ink of {subject}, stippling technique, high contrast, intricate detail, black and white illustration"},{"id":"mnjtee2mvwbm","template":"Architectural line drawing of {subject}, precise technical linework, isometric perspective, blueprint aesthetic"}]},{"name":"Category 4: 3D Render & Clay","notes":"The clay render modifier produces the most distinct and popular look in this category. For best results keep subjects centred with a neutral background. Midjourney and Adobe Firefly both handle this style well.","tags":["midjourney","firefly","trending"],"image":"","modifiers":["clay render","soft studio lighting","pastel palette","glossy surface","dark background"],"prompts":[{"id":"mnjtepzegc1u","template":"3D clay render of {subject}, smooth matte surface, pastel colours, soft studio lighting, Blender aesthetic, 4K"},{"id":"mnjth06xkh48","template":"Cute chibi 3D render of {subject}, rounded oversized proportions, soft shadows, toylike quality, playful palette"},{"id":"mnjthd2ce12r","template":"Minimal 3D icon of {subject}, clean geometry, soft ambient occlusion, white background, product render quality"},{"id":"mnjthj3b98e5","template":"Inflatable 3D render of {subject}, puffy glossy surface, bright saturated colours, drop shadow, fun aesthetic"},{"id":"mnjthorvkl84","template":"Isometric 3D illustration of {subject}, clean geometric forms, pastel colour scheme, soft shadows, game asset style"},{"id":"mnjthwyktuzl","template":"Hyperrealistic 3D sculpture of {subject}, fine surface detail, physically based rendering, dramatic studio lighting"}]},{"name":"Category 5: Vintage & Retro Print","notes":"Adding a grain texture or halftone modifier significantly enhances the vintage feel. These prompts work well for posters, merchandise mockups and social media content. Try combining with the risograph modifier for a trendy editorial look.","tags":["midjourney","dall-e","commercial use","poster"],"image":"","modifiers":["halftone grain","risograph print","aged paper","two colour print","screen print texture"],"prompts":[{"id":"mnjti4wolrpz","template":"Vintage travel poster of {subject}, retro illustration style, limited colour palette, art deco typography influence"},{"id":"mnjtraw8bw3k","template":"1960s psychedelic poster featuring {subject}, bold swirling forms, saturated colours, hand lettering aesthetic"},{"id":"mnjtrgktpmc9","template":"Retro screen print of {subject}, two colour design, bold graphic shapes, distressed texture, band poster aesthetic"},{"id":"mnjtro4ege1b","template":"Mid-century modern advertisement featuring {subject}, clean geometric illustration, warm muted tones, nostalgic feel"},{"id":"mnjtrtl3emct","template":"Woodblock print style of {subject}, bold carved lines, layered colour, Japanese ukiyo-e influence, textured surface"},{"id":"mnjtrzlcirkv","template":"Risograph print of {subject}, slightly misregistered colours, grain texture, limited ink palette, indie print aesthetic"}]}]};
+var STORAGE_KEY = 'pp_' + PACK.id;
+var subject = PACK.defaultSubject;
+var currentTab = 'all';
+var favorites = new Set();
+var activeMods = {};
+
+var infoVisible = true;
+function toggleInfo() {
+  infoVisible = !infoVisible;
+  var main = document.getElementById('main');
+  if (main) main.classList.toggle('info-hidden', !infoVisible);
+  var btn = document.getElementById('btn-toggle-info');
+  if (btn) {
+    btn.classList.toggle('info-off', !infoVisible);
+    btn.title = infoVisible ? 'Hide category info' : 'Show category info';
+    btn.innerHTML = (infoVisible ? '&#9432;' : '&#9432;') + ' Info';
+  }
+}
+
+function save() {
+  try {
+    var m = {};
+    for (var k in activeMods) m[k] = Array.from(activeMods[k]);
+    localStorage.setItem(STORAGE_KEY, JSON.stringify({
+      subject: subject === PACK.defaultSubject ? '' : subject,
+      favorites: Array.from(favorites),
+      mods: m
+    }));
+  } catch(e) {}
+}
+
+function load() {
+  try {
+    var raw = localStorage.getItem(STORAGE_KEY);
+    if (!raw) return;
+    var s = JSON.parse(raw);
+    if (s.subject) { subject = s.subject; document.getElementById('subject-input').value = s.subject; }
+    if (s.favorites) favorites = new Set(s.favorites);
+    if (s.mods) { for (var k in s.mods) activeMods[k] = new Set(s.mods[k]); }
+  } catch(e) {}
+}
+
+function esc(s) {
+  return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+}
+
+function resolveText(t, ci) {
+  var mods = activeMods[ci] ? Array.from(activeMods[ci]) : [];
+  var r = t.replace('{subject}', subject || PACK.defaultSubject);
+  if (mods.length) r += ', ' + mods.join(', ');
+  return r;
+}
+
+function resolveHTML(t, ci) {
+  var mods = activeMods[ci] ? Array.from(activeMods[ci]) : [];
+  var s = esc(subject || PACK.defaultSubject);
+  var r = t.replace('{subject}', '<span class="subject-hl">' + s + '</span>');
+  if (mods.length) r += ', <span class="modifier-hl">' + esc(mods.join(', ')) + '</span>';
+  return r;
+}
+
+function render() { applyTheme(); renderHero(); renderContent(); updateBadge(); }
+
+function applyTheme() {
+  var r = document.documentElement;
+  var t = PACK.theme;
+  r.style.setProperty('--bg', t.bg);
+  r.style.setProperty('--surface', t.surface);
+  r.style.setProperty('--surface2', t.surface2);
+  r.style.setProperty('--border', t.border);
+  r.style.setProperty('--accent', t.accent);
+  r.style.setProperty('--accent2', t.accent2);
+  // Set contrast colour for text on accent backgrounds
+  var ac = t.accent.replace('#','');
+  var ar=parseInt(ac.slice(0,2),16)/255, ag=parseInt(ac.slice(2,4),16)/255, ab=parseInt(ac.slice(4,6),16)/255;
+  var lum = 0.299*ar + 0.587*ag + 0.114*ab;
+  r.style.setProperty('--accent-contrast', lum > 0.5 ? '#000000' : '#ffffff');
+  r.style.setProperty('--text', t.text);
+  r.style.setProperty('--muted', t.muted);
+  document.title = PACK.title;
+}
+
+function renderHero() {
+  var total = PACK.categories.reduce(function(n,c) { return n + c.prompts.length; }, 0);
+  var mods = PACK.categories.reduce(function(n,c) { return n + (c.modifiers||[]).length; }, 0);
+  document.getElementById('hero-eyebrow').textContent = 'by ' + PACK.author;
+  document.getElementById('hero-title').textContent = PACK.title;
+  document.getElementById('hero-tagline').textContent = PACK.tagline;
+  document.getElementById('hero-stats').innerHTML =
+    '<div class="stat"><span class="stat-num">' + total + '</span><span class="stat-label">Prompts</span></div>' +
+    '<div class="stat"><span class="stat-num">' + PACK.categories.length + '</span><span class="stat-label">Categories</span></div>' +
+    '<div class="stat"><span class="stat-num">' + mods + '</span><span class="stat-label">Modifiers</span></div>';
+  document.getElementById('footer').textContent = PACK.title + ' \u00b7 ' + PACK.author + ' \u00b7 ' + total + ' prompts';
+  var introEl = document.getElementById('hero-intro');
+  if (introEl) {
+    if (PACK.intro) { introEl.textContent = PACK.intro; introEl.style.display = 'block'; }
+    else { introEl.style.display = 'none'; }
+  }
+}
+
+function renderContent() {
+  var main = document.getElementById('main');
+  main.innerHTML = '';
+  if (currentTab === 'favorites') { renderFavorites(main); } else { renderAll(main); }
+}
+
+function renderAll(container) {
+  PACK.categories.forEach(function(cat, ci) {
+    if (!activeMods[ci]) activeMods[ci] = new Set();
+    var sec = document.createElement('div');
+    sec.className = 'category';
+    sec.innerHTML =
+      '<div class="cat-header">' +
+        '<span class="cat-name">' + esc(cat.name) + '</span>' +
+        '<div class="cat-line"></div>' +
+        '<span class="cat-count">' + cat.prompts.length + ' prompts</span>' +
+      '</div>' +
+      buildInfoBlock(cat) +
+      buildModRow(cat, ci) +
+      '<div class="prompts-grid" id="grid-' + ci + '"></div>';
+    container.appendChild(sec);
+    var grid = sec.querySelector('#grid-' + ci);
+    cat.prompts.forEach(function(p) { grid.appendChild(buildCard(p, ci)); });
+  });
+}
+
+function buildInfoBlock(cat) {
+  var hasNotes = cat.notes && cat.notes.trim();
+  var hasTags  = cat.tags  && cat.tags.length;
+  var hasImage = cat.image && cat.image.trim();
+  if (!hasNotes && !hasTags && !hasImage) return '';
+  var parts = '';
+  if (hasTags)  parts += '<div class="cat-tags">' + cat.tags.map(function(t, i, a) {
+    return '<span class="cat-tag">' + esc(t) + (i < a.length-1 ? ' · ' : '') + '</span>';
+  }).join('') + '</div>';
+  if (hasNotes) parts += '<div class="cat-notes">' + esc(cat.notes) + '</div>';
+  if (hasImage) parts += '<img class="cat-image" src="' + esc(cat.image) + '" alt="" loading="lazy">';
+  return '<div class="cat-info">' + parts + '</div>';
+}
+function buildModRow(cat, ci) {
+  if (!cat.modifiers || !cat.modifiers.length) return '';
+  var chips = cat.modifiers.map(function(m, mi) {
+    var a = activeMods[ci] && activeMods[ci].has(m) ? 'active' : '';
+    return '<span class="mod-chip ' + a + '" data-ci="' + ci + '" data-mi="' + mi + '">' + esc(m) + '</span>';
+  }).join('');
+  return '<div class="modifier-row" id="modrow-' + ci + '"><span class="mod-label">Modifiers</span>' + chips + '</div>';
+}
+
+function buildCard(p, ci) {
+  var card = document.createElement('div');
+  card.className = 'prompt-card' + (favorites.has(p.id) ? ' favourited' : '');
+  card.id = 'card-' + p.id;
+  var fa = favorites.has(p.id) ? 'btn-fav active' : 'btn-fav';
+  card.innerHTML =
+    '<div class="prompt-text" id="pt-' + p.id + '">' + resolveHTML(p.template, ci) + '</div>' +
+    '<div class="card-actions">' +
+      '<button class="' + fa + '" data-pid="' + esc(p.id) + '" title="Favorite">&#9733;</button>' +
+      '<button class="btn-copy" data-pid="' + esc(p.id) + '" data-ci="' + ci + '"><span>Copy</span></button>' +
+    '</div>';
+  return card;
+}
+
+function renderFavorites(container) {
+  var favs = [];
+  PACK.categories.forEach(function(cat, ci) {
+    cat.prompts.forEach(function(p) {
+      if (favorites.has(p.id)) favs.push({p:p, ci:ci, cat:cat});
+    });
+  });
+  if (!favs.length) {
+    container.innerHTML = '<div class="empty-state"><div class="empty-icon">&#9733;</div><p>No favorites yet.<br>Tap the star on any prompt to save it here.</p></div>';
+    return;
+  }
+  var byCat = {};
+  favs.forEach(function(item) {
+    if (!byCat[item.ci]) byCat[item.ci] = {cat:item.cat, ci:item.ci, prompts:[]};
+    byCat[item.ci].prompts.push(item.p);
+  });
+  Object.values(byCat).forEach(function(group) {
+    if (!activeMods[group.ci]) activeMods[group.ci] = new Set();
+    var sec = document.createElement('div');
+    sec.className = 'category';
+    sec.innerHTML =
+      '<div class="cat-header">' +
+        '<span class="cat-name">' + esc(group.cat.name) + '</span>' +
+        '<div class="cat-line"></div>' +
+        '<span class="cat-count">' + group.prompts.length + ' saved</span>' +
+      '</div>' +
+      '<div class="prompts-grid"></div>';
+    var grid = sec.querySelector('.prompts-grid');
+    group.prompts.forEach(function(p) { grid.appendChild(buildCard(p, group.ci)); });
+    container.appendChild(sec);
+  });
+}
+
+function switchTab(tab) {
+  currentTab = tab;
+  document.querySelectorAll('.tab').forEach(function(t) { t.classList.toggle('active', t.dataset.tab === tab); });
+  renderContent();
+}
+
+function toggleMod(ci, mi) {
+  var mod = PACK.categories[ci].modifiers[mi];
+  if (!activeMods[ci]) activeMods[ci] = new Set();
+  if (activeMods[ci].has(mod)) { activeMods[ci].delete(mod); } else { activeMods[ci].add(mod); }
+  var grid = document.getElementById('grid-' + ci);
+  if (grid) {
+    PACK.categories[ci].prompts.forEach(function(p) {
+      var el = document.getElementById('pt-' + p.id);
+      if (el) el.innerHTML = resolveHTML(p.template, ci);
+    });
+  }
+  // Update chip states — chips are siblings of grid, so search the parent category section
+  var modRow = document.getElementById('modrow-' + ci);
+  if (modRow) {
+    modRow.querySelectorAll('.mod-chip').forEach(function(chip) {
+      var m = PACK.categories[ci].modifiers[parseInt(chip.dataset.mi)];
+      chip.classList.toggle('active', activeMods[ci].has(m));
+    });
+  }
+  save();
+}
+
+function toggleFav(id) {
+  if (favorites.has(id)) { favorites.delete(id); } else { favorites.add(id); }
+  var card = document.getElementById('card-' + id);
+  if (card) {
+    card.classList.toggle('favourited', favorites.has(id));
+    var btn = card.querySelector('.btn-fav');
+    if (btn) btn.classList.toggle('active', favorites.has(id));
+  }
+  updateBadge();
+  save();
+  if (currentTab === 'favorites') renderContent();
+}
+
+function doCopy(id, ci) {
+  var template = '';
+  PACK.categories.forEach(function(cat) {
+    var p = cat.prompts.find(function(x) { return x.id === id; });
+    if (p) template = p.template;
+  });
+  var text = resolveText(template, ci);
+  var btn = document.querySelector('.btn-copy[data-pid="' + id + '"]');
+  var span = btn ? btn.querySelector('span') : null;
+  var finish = function() {
+    if (btn) btn.classList.add('copied');
+    if (span) span.textContent = 'Copied!';
+    setTimeout(function() { if (btn) btn.classList.remove('copied'); if (span) span.textContent = 'Copy'; }, 1800);
+  };
+  if (navigator.clipboard && navigator.clipboard.writeText) {
+    navigator.clipboard.writeText(text).then(finish).catch(function() { fallbackCopy(text, finish); });
+  } else { fallbackCopy(text, finish); }
+}
+
+function fallbackCopy(text, cb) {
+  var ta = document.createElement('textarea');
+  ta.value = text; ta.style.cssText = 'position:fixed;opacity:0;top:0;left:0';
+  document.body.appendChild(ta); ta.select();
+  try { document.execCommand('copy'); } catch(e) {}
+  document.body.removeChild(ta); cb();
+}
+
+function updateBadge() { document.getElementById('fav-badge').textContent = favorites.size; }
+
+function exportPDF() {
+  var printCats = [];
+  if (currentTab === 'favorites') {
+    var byCat = {};
+    PACK.categories.forEach(function(cat, ci) {
+      cat.prompts.forEach(function(p) {
+        if (favorites.has(p.id)) {
+          if (!byCat[ci]) byCat[ci] = {cat:cat, ci:ci, prompts:[]};
+          byCat[ci].prompts.push(p);
+        }
+      });
+    });
+    printCats = Object.values(byCat);
+  } else {
+    printCats = PACK.categories.map(function(cat, ci) { return {cat:cat, ci:ci, prompts:cat.prompts}; });
+  }
+  var total = printCats.reduce(function(n,g) { return n + g.prompts.length; }, 0);
+  var rows = '';
+  printCats.forEach(function(group) {
+    var cat = group.cat; var ci = group.ci;
+    var modHTML = '';
+    if (cat.modifiers && cat.modifiers.length) {
+      modHTML = '<div class="mods"><span class="mod-label">Modifiers</span>' +
+        cat.modifiers.map(function(m) {
+          var isActive = activeMods[ci] && activeMods[ci].has(m);
+          return '<span class="mod-chip' + (isActive ? ' active' : '') + '">' + esc(m) + '</span>';
+        }).join('') + '</div>';
+    }
+    var pdfInfoHTML = '';
+    if (infoVisible && ((cat.image&&cat.image.trim())||(cat.notes&&cat.notes.trim())||(cat.tags&&cat.tags.length))) {
+      pdfInfoHTML = '<div class="cat-info">';
+      if (cat.tags&&cat.tags.length)  pdfInfoHTML += '<div class="cat-tags">'+cat.tags.map(function(t,i,a){return '<span class="cat-tag">'+esc(t)+(i<a.length-1?' · ':'')+' </span>';}).join('')+'</div>';
+      if (cat.notes&&cat.notes.trim()) pdfInfoHTML += '<div class="cat-notes">'+esc(cat.notes)+'</div>';
+      if (cat.image&&cat.image.trim()) pdfInfoHTML += '<img class="cat-image" src="'+esc(cat.image)+'" alt="">';
+      pdfInfoHTML += '</div>';
+    }
+    rows += '<div class="cat-section"><div class="cat-head"><span class="cat-name">' + esc(cat.name) + '</span><span class="cat-count">' + group.prompts.length + ' prompt' + (group.prompts.length !== 1 ? 's' : '') + (currentTab === 'favorites' ? ' saved' : '') + '</span></div>' + pdfInfoHTML + modHTML +
+      group.prompts.map(function(p) { return '<div class="prompt-row">' + esc(resolveText(p.template, ci)) + '</div>'; }).join('') +
+      '</div>';
+  });
+  var t = PACK.theme;
+  var subjectNote = subject && subject !== PACK.defaultSubject ? ' \u00b7 subject: "' + esc(subject) + '"' : '';
+  var isFav = currentTab === 'favorites';
+  var html = '<!DOCTYPE html><html><head><meta charset="UTF-8"><title>' + esc(PACK.title) + '</title><style>' +
+    '@page{margin:0}' +
+    '*{box-sizing:border-box;margin:0;padding:0;-webkit-print-color-adjust:exact;print-color-adjust:exact}' +
+    'body{background:' + t.bg + ';color:' + t.text + ';font-family:ui-monospace,"SF Mono","Cascadia Mono","Fira Mono",monospace;font-size:11px;line-height:1.6;padding:14mm 16mm 20mm}' +
+    '.header{border-bottom:2.5px solid ' + t.accent + ';padding-bottom:14px;margin-bottom:20px}' +
+    '.pack-eyebrow{font-size:10px;letter-spacing:.12em;text-transform:uppercase;color:' + t.accent + ';margin-bottom:6px}' +
+    '.pack-title{font-family:Georgia,"Times New Roman",serif;font-size:26px;font-weight:700;color:' + t.text + ';letter-spacing:-.3px;margin-bottom:6px;line-height:1.2}' +
+    '.fav-badge{display:inline-block;font-size:11px;color:' + t.accent + ';border:1px solid ' + t.accent + ';border-radius:4px;padding:2px 8px;margin-left:10px;vertical-align:middle}' +
+    '.pack-tagline{font-size:11px;color:' + t.muted + ';margin-bottom:12px}' +
+    '.pack-stats{display:flex;gap:20px}' +
+    '.stat-num{font-size:18px;font-weight:700;color:' + t.accent + ';font-family:Georgia,serif;line-height:1}' +
+    '.stat-label{font-size:9px;letter-spacing:.08em;text-transform:uppercase;color:' + t.muted + ';margin-top:2px}' +
+    '.cat-section{margin-bottom:18px;break-inside:avoid}' +
+    '@media print{.cat-section+.cat-section{margin-top:14mm}}' +
+    '.cat-head{display:flex;align-items:center;gap:10px;margin-bottom:8px;padding-bottom:5px;border-bottom:1.5px solid ' + t.accent2 + '}' +
+    '.cat-name{font-size:10px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:' + t.accent2 + ';flex:1}' +
+    '.cat-count{font-size:9px;color:' + t.muted + '}' +
+    '.mods{display:flex;flex-wrap:wrap;align-items:center;gap:5px;margin-bottom:8px;padding:6px 10px;background:' + t.surface + ';border:1px solid ' + t.border + ';border-radius:6px}' +
+    '.mod-label{font-size:9px;letter-spacing:.08em;text-transform:uppercase;color:' + t.muted + ';white-space:nowrap;margin-right:2px}' +
+    '.mod-chip{background:' + t.surface2 + ';border:1px solid ' + t.border + ';border-radius:20px;font-size:9px;padding:2px 8px;color:' + t.muted + '}' +
+    '.mod-chip.active{border-color:' + t.accent2 + ';color:' + t.accent2 + ';background:' + t.surface + '}' +
+    '.cat-info{margin-bottom:8px;padding:8px 10px;background:' + t.surface + ';border:1px solid ' + t.border + ';border-radius:6px}' +
+    '.cat-notes{font-size:10px;color:' + t.muted + ';line-height:1.6;margin-bottom:4px;white-space:pre-line}' +
+    '.cat-tag{font-size:9px;letter-spacing:.05em;color:' + t.muted + '}' +
+    '.cat-image{width:100%;border-radius:6px;margin-bottom:6px;object-fit:contain;background:' + t.surface2 + ';border:1px solid ' + t.border + ';display:block}' +
+    '.prompt-row{background:' + t.surface + ';border:1px solid ' + t.border + ';border-radius:6px;padding:8px 11px;margin-bottom:5px;font-size:11px;color:' + t.text + ';break-inside:avoid;line-height:1.6}' +
+    '.footer-bar{margin-top:20px;font-size:9px;color:' + t.muted + ';border-top:1px solid ' + t.border + ';padding:8px 0 0;display:flex;justify-content:space-between}' +
+    '</style></head><body>' +
+    '<div class="header">' +
+      '<div class="pack-eyebrow">by ' + esc(PACK.author) + '</div>' +
+      '<div class="pack-title">' + esc(PACK.title) + (isFav ? '<span class="fav-badge">\u2605 Favorites</span>' : '') + '</div>' +
+      (PACK.tagline ? '<div class="pack-tagline">' + esc(PACK.tagline) + subjectNote + '</div>' : (subjectNote ? '<div class="pack-tagline">' + subjectNote.slice(3) + '</div>' : '')) +
+      (PACK.intro ? '<div class="pack-intro">' + esc(PACK.intro) + '</div>' : '') +
+      '<div class="pack-stats">' +
+        '<div><div class="stat-num">' + total + '</div><div class="stat-label">' + (isFav ? 'Saved' : 'Prompts') + '</div></div>' +
+        '<div><div class="stat-num">' + printCats.length + '</div><div class="stat-label">Categories</div></div>' +
+      '</div>' +
+    '</div>' +
+    rows +
+    '<div class="footer-bar"><span>' + esc(PACK.title) + ' \u00b7 ' + esc(PACK.author) + '</span><span>' + total + ' prompts</span></div>' +
+    '</body></html>';
+  try {
+    var blob = new Blob([html], {type: 'text/html'});
+    var url = URL.createObjectURL(blob);
+    var win = window.open(url, '_blank');
+    if (!win) { throw new Error('blocked'); }
+    setTimeout(function() { win.focus(); win.print(); URL.revokeObjectURL(url); }, 500);
+  } catch(e) {
+    var win2 = window.open('', '_blank');
+    if (!win2) { alert('Pop-ups are blocked. Please allow pop-ups for this page and try again.'); return; }
+    win2.document.write(html);
+    win2.document.close();
+    setTimeout(function() { win2.focus(); win2.print(); }, 400);
+  }
+}
+
+document.getElementById('subject-input').addEventListener('input', function() {
+  subject = this.value.trim() || PACK.defaultSubject;
+  var hint = document.getElementById('subject-hint');
+  hint.textContent = this.value.trim() ? '"' + this.value.trim() + '" applied to all prompts' : 'replaces the placeholder in every prompt';
+  PACK.categories.forEach(function(cat, ci) {
+    cat.prompts.forEach(function(p) {
+      var el = document.getElementById('pt-' + p.id);
+      if (el) el.innerHTML = resolveHTML(p.template, ci);
+    });
+  });
+  save();
+});
+
+document.addEventListener('click', function(e) {
+  var chip = e.target.closest('.mod-chip');
+  if (chip) { toggleMod(parseInt(chip.dataset.ci), parseInt(chip.dataset.mi)); return; }
+  var fav = e.target.closest('.btn-fav');
+  if (fav) { toggleFav(fav.dataset.pid); return; }
+  var copy = e.target.closest('.btn-copy');
+  if (copy) { doCopy(copy.dataset.pid, parseInt(copy.dataset.ci)); return; }
+});
+
+function init() {
+  try { load(); render(); }
+  catch(e) { document.getElementById('main').innerHTML = '<div style="padding:40px;color:#f55;font-family:monospace">Error: ' + e.message + '</div>'; }
+}
+document.readyState === 'loading' ? document.addEventListener('DOMContentLoaded', init) : init();
+</script>
+</body>
+</html>
